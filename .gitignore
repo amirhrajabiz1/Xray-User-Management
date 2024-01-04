@@ -1,0 +1,6 @@
+geoip.dat
+geosite.dat
+users/
+__pycache__/
+xray
+xray.log
