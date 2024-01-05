@@ -4,3 +4,5 @@ users/
 __pycache__/
 xray
 xray.log
+access.log
+access.log.copy

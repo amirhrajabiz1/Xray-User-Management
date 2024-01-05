@@ -1,5 +1,6 @@
 import sys
 import argparse
+import os
 
 from process_users import add_user_to_file, convert_to_bytes, del_user_from_file, refresh_user_in_file
 
@@ -31,24 +32,30 @@ def process_args():
 if __name__ == "__main__":
     name, file_path, quota, days, concurrent_connections, force = process_args()
 
-    added = add_user_to_file(name, file_path, convert_to_bytes(quota), days,concurrent_connections)
+    # check if the client file exists for this user and if the file exists the added will be False
+    user_client_path = os.path.join('./users', name, 'client.config')
+    if os.path.exists(user_client_path):
+        added = False
+    else:
+        added = add_user_to_file(name, file_path, convert_to_bytes(quota), days,concurrent_connections)
+
     if added:
-        print(f"Successfully added '{name}' to '{file_path}'.")
+        print(f"Successfully added '{name}'.")
     else:
         if not force:
-            print(f"The user '{name}' already exists in '{file_path}'. use -f {{soft,hard}} to replace the user.")
+            print(f"'{name}'s information already exists. use -f {{soft,hard}} to replace the user.")
         elif force == 'hard':
             del_user_from_file(name, file_path)
             added = add_user_to_file(name, file_path, convert_to_bytes(quota), days,concurrent_connections)
             if added:
-                print(f"Successfully deleted and created '{name}' in '{file_path}'.")
+                print(f"Successfully deleted and created '{name}' again.")
             else:
 
-                print(f"Failed to hardly create user '{name}' in '{file_path}'.")
+                print(f"Failed to hardly create user '{name}'")
         elif force == 'soft':
             refreshed = refresh_user_in_file(name, file_path, convert_to_bytes(quota), days,concurrent_connections)
             if refreshed:
-                print(f"Successfully deleted and created '{name}' while (keeping the old uuid) in '{file_path}'.")
+                print(f"Successfully deleted and created '{name}' while keeping the old uuid.")
             else:
-                print(f"Failed to softly create user '{name}' in '{file_path}'.")
+                print(f"Failed to softly create user '{name}'.")
 

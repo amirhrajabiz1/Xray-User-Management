@@ -186,11 +186,22 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
     # Extract the clients
     clients = file_data["inbounds"][0]["settings"]["clients"]
     # Extract the uuid of the user
+    uuid = None
     for client in clients:
         if user == client['email']:
             uuid = client['id']
-    # delete the user from 'config.json'
-    deleted = del_user_from_file(user, config_file_path)
+
+    if uuid:
+        # delete the user from 'config.json'
+        deleted = del_user_from_file(user, config_file_path)
+    else:
+        user_client_config = os.path.join('./users', user, 'client.config')
+        if os.path.exists(user_client_config):
+            with open(user_client_config, 'r') as file:
+                user_client_config_data = file.read()
+            uuid = user_client_config_data.split('//')[1].split('@')[0]
+        else:
+            return False
 
 
     # open the 'config.json' without the user.
