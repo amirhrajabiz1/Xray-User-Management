@@ -6,3 +6,5 @@ xray
 xray.log
 access.log
 access.log.copy
+reasonremove.log
+users.log

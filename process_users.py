@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 
-log_path = './xray.log'
+log_path = './users.log'
 
 
 
@@ -160,11 +160,11 @@ def add_user_to_file(user: str, config_file_path: str, quota: str, days: int,con
 
     create_client_config(client_dict, file_data, quota, days, concurrent_connections)
   
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    send_log(log_path, f'{current_time} added \'{user}\' to \'{config_file_path}\' file.\n')
+    send_log(log_path, f'added \'{user}\' to \'{config_file_path}\' file.\n')
 
 
     # if the user exists before and have statistics for today we should make the today's statistics file for the old one and create a fresh one for today.
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     current_date = current_time.split()[0].split('-')
     this_month_user_stats = os.path.join('users', user, 'Statistics', current_date[0], current_date[1])
     today_user_stats = os.path.join(this_month_user_stats, current_date[2]+'.json')
@@ -219,11 +219,11 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
 
     create_client_config(client_dict, file_data, quota, days, concurrent_connections)
   
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    send_log(log_path, f'{current_time} added \'{user}\' to \'{config_file_path}\' file.\n')
+    send_log(log_path, f'added \'{user}\' softly to \'{config_file_path}\' file.\n')
 
 
     # if the user exists before and have statistics for today we should make the today's statistics file for the old one and create a fresh one for today.
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     current_date = current_time.split()[0].split('-')
     this_month_user_stats = os.path.join('users', user, 'Statistics', current_date[0], current_date[1])
     today_user_stats = os.path.join(this_month_user_stats, current_date[2]+'.json')
@@ -257,12 +257,13 @@ def del_user_from_file(name: str, config_file_path) -> bool:
 
     
     if user_exists:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        send_log(log_path, f'{current_time} removed \'{name}\' to \'{config_file_path}\' file.\n')
+        send_log(log_path, f'removed \'{name}\' from \'{config_file_path}\' file.\n')
     return user_exists 
 
 def send_log(log_file: str, log_message: str) -> None:
-    """ send a log."""
+    """ send a log to log_file with timestamp."""
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_message = current_time + ' ' + log_message
     file_path = Path(log_file)
 
     with file_path.open(mode='a') as file:

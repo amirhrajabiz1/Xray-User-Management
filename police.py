@@ -5,7 +5,7 @@ import json
 import time
 from typing import NamedTuple
 
-from process_users import convert_to_bytes, del_user_from_file
+from process_users import convert_to_bytes, del_user_from_file, send_log
 from limit_ip_concurrent import files_management, is_CC_valid
 
 
@@ -154,7 +154,7 @@ def check_users_validity(config_file: str) -> None:
             if user_status != 'valid':
                 user_deleted_successfully = del_user_from_file(username, config_file)
                 if user_deleted_successfully:
-                    print('user', f'\'{username}\'', f'removed because of {user_status}.') 
+                    send_log('./reasonremove.log', f'user \'{username}\' removed because of {user_status}.\n')
             else:
                 #print('user', f'\'{username}\'', 'stays.')
                 pass

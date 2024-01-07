@@ -7,11 +7,11 @@
 xray_pid=$(echo $!)
 
 # check if config.json file is modified and if so restart the xray.
-log_path="./xray.log"
+log_path="./users.log"
 
 
 # Run process_stats_v2.py and police.py in background
-python3 process_stats_v2.py &
+python3 process_stats.py &
 stats_pid=$(echo $!)
 python3 police.py &
 police_pid=$(echo $!)
