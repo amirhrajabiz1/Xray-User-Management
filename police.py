@@ -9,6 +9,10 @@ from process_users import convert_to_bytes, del_user_from_file, send_log
 from limit_ip_concurrent import files_management, is_CC_valid
 
 
+CONFIG_PATH = 'config.json'
+ACCESS_LOG_PATH = 'access.log'
+REASON_REMOVE_LOG_PATH = 'reasonremove.log'
+
 def extract_date_quota_CC_from_client_file(user_name: str) -> Tuple[str, str, str]:
     """
     give the name of the user and return the date and quota and concurrent connections of the user from client.config of that user.
@@ -38,7 +42,7 @@ def is_user_valid(user_name: str) -> str:
 
         quota_valid = is_quota_valid(user_stats_path, user_quota, user_date)
 
-        CC_valid = is_CC_valid(user_name, user_CC, './access.log.copy')
+        CC_valid = is_CC_valid(user_name, user_CC, f'{ACCESS_LOG_PATH}.copy')
 
         if not quota_valid:
             return 'quota_out'
@@ -154,18 +158,18 @@ def check_users_validity(config_file: str) -> None:
             if user_status != 'valid':
                 user_deleted_successfully = del_user_from_file(username, config_file)
                 if user_deleted_successfully:
-                    send_log('./reasonremove.log', f'user \'{username}\' removed because of {user_status}.\n')
+                    send_log(REASON_REMOVE_LOG_PATH, f'user \'{username}\' removed because of {user_status}.\n')
             else:
                 #print('user', f'\'{username}\'', 'stays.')
                 pass
 
-        files_management('./access.log', './access.log.copy')
+        files_management(ACCESS_LOG_PATH)
         time.sleep(10)
     
 
 
 def main() -> None:
-    check_users_validity('config.json') 
+    check_users_validity(CONFIG_PATH) 
 
 if __name__ == "__main__":
     main()

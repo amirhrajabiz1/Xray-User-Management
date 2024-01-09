@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 
-log_path = './users.log'
+LOG_PATH = './users.log'
 
 
 
@@ -160,7 +160,7 @@ def add_user_to_file(user: str, config_file_path: str, quota: str, days: int,con
 
     create_client_config(client_dict, file_data, quota, days, concurrent_connections)
   
-    send_log(log_path, f'added \'{user}\' to \'{config_file_path}\' file.\n')
+    send_log(LOG_PATH, f'added \'{user}\' to \'{config_file_path}\' file.\n')
 
 
     # if the user exists before and have statistics for today we should make the today's statistics file for the old one and create a fresh one for today.
@@ -219,7 +219,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
 
     create_client_config(client_dict, file_data, quota, days, concurrent_connections)
   
-    send_log(log_path, f'added \'{user}\' softly to \'{config_file_path}\' file.\n')
+    send_log(LOG_PATH, f'added \'{user}\' softly to \'{config_file_path}\' file.\n')
 
 
     # if the user exists before and have statistics for today we should make the today's statistics file for the old one and create a fresh one for today.
@@ -257,7 +257,7 @@ def del_user_from_file(name: str, config_file_path) -> bool:
 
     
     if user_exists:
-        send_log(log_path, f'removed \'{name}\' from \'{config_file_path}\' file.\n')
+        send_log(LOG_PATH, f'removed \'{name}\' from \'{config_file_path}\' file.\n')
     return user_exists 
 
 def send_log(log_file: str, log_message: str) -> None:

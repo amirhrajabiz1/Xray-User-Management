@@ -22,10 +22,11 @@ def is_CC_valid(user_name, max_concurrent_connections, copy_access_file) -> bool
         return False
     return True
 
-def files_management(original_access_path: str, copy_access_path: str):
+def files_management(original_access_path: str):
     """
     moves all content of original_access_path to the copy_access_path file.
     """
+    copy_access_path = original_access_path + '.copy'
     try:
         with open(original_access_path, 'r') as file:
             original_text = file.read()
@@ -36,6 +37,3 @@ def files_management(original_access_path: str, copy_access_path: str):
 
     with open(copy_access_path, 'w') as file:
         file.write(original_text)
-
-if __name__ == "__main__":
-    print(extract_records_accesslog('access.log'))
