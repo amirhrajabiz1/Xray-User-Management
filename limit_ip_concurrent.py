@@ -15,8 +15,17 @@ def is_CC_valid(user_name, max_concurrent_connections, copy_access_file) -> bool
     email_records = [record for record in all_records if 'email' in record]
     concurrent_connections = set()
     for record in email_records:
-        if user_name == record.split()[-1]:
-            concurrent_connections.add((record.split()[2].split(':')[0], record.split()[-1]))
+        user_in_record = record.split()[-1]
+        if user_name == user_in_record:
+            ip_port = record.split()[2]
+            # check the ip is version 4 or 6
+            if '[' in ip_port:
+                temp = ip_port.split(':')
+                ip = ':'.join(temp[:-1])    # IPv6
+            else:
+                ip = ip_port.split(':')[0]  # IPv4
+
+            concurrent_connections.add(ip)
 
     if len(concurrent_connections) > max_concurrent_connections:
         return False
