@@ -1,0 +1,30 @@
+{
+    "inbounds": [
+        {
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "udp": false,
+                "clients": [
+                    {
+                        "id": "ca57fd3d-e6f1-4a54-9670-cc30af270076",
+                        "alterId": 0,
+                        "email": "amir",
+                        "flow": "",
+                        "level": 0
+                    }
+                ],
+                "decryption": "none",
+                "allowTransparent": false
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "tcpSettings": {
+                    "header": {
+                        "type": "http"
+                    }
+                }
+            }
+        }
+    ]
+}

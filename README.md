@@ -25,19 +25,7 @@ cd Xray-User-Management
 chmod +x xray run.sh
 ```
 
-5- edit the 'config.json' file for the traffic protocol.
-Note: DO NOT alter any other section except this section:
-```json
-            "port": 443,
-            "protocol": "vless",
-            "settings": {
-                "udp": false,
-                "clients": [
-                ],
-                "decryption": "none",
-                "allowTransparent": false
-            },
-```
+5- edit the 'conf/inbound.json' for inbound protocols you want to use.
 
 6- execute the 'run.sh'
 ```bash

@@ -4,7 +4,7 @@ import argparse
 from process_users import del_user_from_file
 
 
-DEFAULT_CONFIG_PATH = 'config.json'
+DEFAULT_CONFIG_PATH = 'conf/inbound.json'
 
 def process_args():
     parser = argparse.ArgumentParser(

@@ -9,7 +9,7 @@ from process_users import convert_to_bytes, del_user_from_file, send_log
 from limit_ip_concurrent import files_management, is_CC_valid
 
 
-CONFIG_PATH = 'config.json'
+CONFIG_PATH = 'conf/inbound.json'
 ACCESS_LOG_PATH = 'access.log'
 REASON_REMOVE_LOG_PATH = 'reasonremove.log'
 
@@ -144,7 +144,7 @@ def create_days_set_between_two_dates(dates: str) -> set:
 
 def check_users_validity(config_file: str) -> None:
     """
-    This function iterate through users in config.json file and decide whether users are eligible to have access to the service.
+    This function iterate through users in conf/inbound.json file and decide whether users are eligible to have access to the service.
     """
     while True:
         with open(config_file, 'r') as file:

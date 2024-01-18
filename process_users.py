@@ -137,7 +137,7 @@ def create_client_config(client_data, config_data, quota, days, concurrent_conne
 def add_user_to_file(user: str, config_file_path: str, quota: str, days: int,concurrent_connections: int) -> bool:
     """
     Add user to a config file
-    Gives a user and path to the config.json file and returns True if creation was successfull otherwise returns False.
+    Gives a user and path to the conf/inbound.json file and returns True if creation was successfull otherwise returns False.
     """
 
 
@@ -179,7 +179,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
     """
 
 
-    # open the 'config.json' with the user
+    # open the 'conf/inbound.json' with the user
     with open(config_file_path, 'r') as file:
         file_data = json.load(file)
     
@@ -192,7 +192,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
             uuid = client['id']
 
     if uuid:
-        # delete the user from 'config.json'
+        # delete the user from 'conf/inbound.json'
         deleted = del_user_from_file(user, config_file_path)
     else:
         user_client_config = os.path.join('./users', user, 'client.config')
@@ -204,7 +204,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
             return False
 
 
-    # open the 'config.json' without the user.
+    # open the 'conf/inbound.json' without the user.
     with open(config_file_path, 'r') as file:
         file_data = json.load(file)
 
@@ -235,7 +235,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
 
 def del_user_from_file(name: str, config_file_path) -> bool:
     """
-    Take an str and returns True if successfully deleted the user from config.json file and returns False otherwise.
+    Take an str and returns True if successfully deleted the user from conf/inbound.json file and returns False otherwise.
     """
     with open(config_file_path, 'r') as file:
         file_data = json.load(file)

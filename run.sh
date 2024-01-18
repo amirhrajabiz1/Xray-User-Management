@@ -6,7 +6,7 @@
 # Get the pid of xray command.
 xray_pid=$(echo $!)
 
-# check if config.json file is modified and if so restart the xray.
+# check if users.log file is modified and if so restart the xray.
 log_path="./users.log"
 
 
@@ -29,7 +29,7 @@ while true; do
 	# Check if the size has increased since the last check
 	if [ "$current_size" -gt "$previous_size" ]; then
 		kill $xray_pid
-		./xray &
+		./xray run -config config.json -confdir conf &
 		xray_pid=$(echo $!)
 		previous_size=$current_size
 	fi

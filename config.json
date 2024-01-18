@@ -26,33 +26,15 @@
         }
     },
     "inbounds": [
-        {
-            "port": 443,
-            "protocol": "vless",
-            "settings": {
-                "udp": false,
-                "clients": [],
-                "decryption": "none",
-                "allowTransparent": false
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "tcpSettings": {
-                    "header": {
-                        "type": "http"
-                    }
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 8080,
-            "protocol": "dokodemo-door",
-            "settings": {
-                "address": "127.0.0.1"
-            },
-            "tag": "api"
-        }
+	{
+	    "listen": "127.0.0.1",
+	    "port": 8080,
+	    "protocol": "dokodemo-door",
+	    "settings": {
+		"address": "127.0.0.1"
+	    },
+	    "tag": "api"
+	}
     ],
     "outbounds": [
         {

@@ -4,7 +4,7 @@ import os
 
 from process_users import add_user_to_file, convert_to_bytes, del_user_from_file, refresh_user_in_file
 
-DEFAULT_CONFIG_PATH = 'config.json'
+DEFAULT_CONFIG_PATH = 'conf/inbound.json'
 DEFAULT_DAYS = 30
 DEFAULT_SIMULTANEOUS = 1
 
