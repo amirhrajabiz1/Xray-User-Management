@@ -6,7 +6,7 @@ from process_users import add_user_to_file, convert_to_bytes, del_user_from_file
 
 DEFAULT_CONFIG_PATH = 'conf/inbound.json'
 DEFAULT_DAYS = 30
-DEFAULT_SIMULTANEOUS = 1
+DEFAULT_SIMULTANEOUS = 5
 
 def process_args():
     parser = argparse.ArgumentParser(
