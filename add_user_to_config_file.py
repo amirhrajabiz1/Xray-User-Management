@@ -37,7 +37,7 @@ if __name__ == "__main__":
     name, file_path, quota, days, concurrent_connections, force = process_args()
     
     # check if the client file exists for this user and if the file exists the added will be False
-    user_client_path = os.path.join('./users', name, 'client.config')
+    user_client_path = os.path.join('./users', name, 'user.json')
     if os.path.exists(user_client_path):
         added = False
     else:

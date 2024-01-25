@@ -105,33 +105,30 @@ def get_ip():
     except Exception as e:
         return f"Error: {e}"
 
-def create_client_config(client_data, config_data, quota, days, concurrent_connections):
+def create_user_info(client_data, config_data, quota, days, concurrent_connections):
     """
-    This function give imformations which in need to create a user client config file.
+    This function stores information about the user.
     """
 
-    port = config_data['inbounds'][0]['port']
-    protocol = config_data['inbounds'][0]['protocol']
-    encryption = config_data['inbounds'][0]['settings']['decryption']
-    stream_network = config_data['inbounds'][0]['streamSettings']['network']
-    header_type = config_data['inbounds'][0]['streamSettings']['tcpSettings']['header']['type']
-    security = 'none'
-    host = 'google.com'
-    ip = get_ip()
     user_name = client_data['email']
     uid = client_data['id']
     readable_quota = convert_size(quota)
     date_range = get_date_range(days)
+    user_infos_dict = {
+            'name': user_name,
+            'id': uid,
+            'quota': readable_quota,
+            'date': date_range,
+            'concurrent_connections': str(concurrent_connections)
+    }
+    user_infos_json = json.dumps(user_infos_dict)
 
-
-
-    config_text = f'{protocol}://{uid}@{ip}:{port}?security={security}&encryption={encryption}&host={host}&headerType={header_type}&type={stream_network}#{user_name}@{readable_quota}@{date_range}@{concurrent_connections}CC'
 
     user_path = os.path.join('users', user_name)
     if not os.path.exists(user_path):
         os.makedirs(user_path)
-    with open(f'./{user_path}/client.config', 'w') as file:
-        file.write(config_text)
+    with open(f'./{user_path}/user.json', 'w') as file:
+        file.write(user_infos_json)
 
     
 def add_user_to_file(user: str, config_file_path: str, quota: str, days: int,concurrent_connections: int) -> bool:
@@ -158,7 +155,7 @@ def add_user_to_file(user: str, config_file_path: str, quota: str, days: int,con
         json.dump(file_data, file, indent=4)
 
 
-    create_client_config(client_dict, file_data, quota, days, concurrent_connections)
+    create_user_info(client_dict, file_data, quota, days, concurrent_connections)
   
     send_log(LOG_PATH, f'added \'{user}\' to \'{config_file_path}\' file.\n')
 
@@ -195,11 +192,11 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
         # delete the user from 'conf/inbound.json'
         deleted = del_user_from_file(user, config_file_path)
     else:
-        user_client_config = os.path.join('./users', user, 'client.config')
+        user_client_config = os.path.join('./users', user, 'user.json')
         if os.path.exists(user_client_config):
             with open(user_client_config, 'r') as file:
-                user_client_config_data = file.read()
-            uuid = user_client_config_data.split('//')[1].split('@')[0]
+                user_client_config_json = json.load(file) 
+            uuid = user_client_config_json['id']
         else:
             return False
 
@@ -217,7 +214,7 @@ def refresh_user_in_file(user: str, config_file_path: str, quota: str, days: int
         json.dump(file_data, file, indent=4)
 
 
-    create_client_config(client_dict, file_data, quota, days, concurrent_connections)
+    create_user_info(client_dict, file_data, quota, days, concurrent_connections)
   
     send_log(LOG_PATH, f'added \'{user}\' softly to \'{config_file_path}\' file.\n')
 

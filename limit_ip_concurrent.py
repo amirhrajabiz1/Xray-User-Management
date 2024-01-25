@@ -9,7 +9,7 @@ def is_CC_valid(user_name, max_concurrent_connections, copy_access_file) -> bool
     This function receive path of the access.log.copy file and and checks the user connetion to see the user has how many connections in the last period.
     if the connections are more that max_concurrent_connections returns False and otherwise return True.
     """
-    max_concurrent_connections = int(max_concurrent_connections[:-2])
+    max_concurrent_connections = int(max_concurrent_connections)
     with open(copy_access_file) as file:
         all_records = file.readlines()
     email_records = [record for record in all_records if 'email' in record]

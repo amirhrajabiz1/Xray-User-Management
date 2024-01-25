@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Run xray in background.
-./xray &
+./xray run -config config.json -confdir conf &
 
 # Get the pid of xray command.
 xray_pid=$(echo $!)

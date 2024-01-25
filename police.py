@@ -15,17 +15,17 @@ REASON_REMOVE_LOG_PATH = 'reasonremove.log'
 
 def extract_date_quota_CC_from_client_file(user_name: str) -> Tuple[str, str, str]:
     """
-    give the name of the user and return the date and quota and concurrent connections of the user from client.config of that user.
+    give the name of the user and return the date and quota and concurrent connections of the user from user.json of that user.
     """
     user_path = os.path.join('users', user_name)
-    config_path = os.path.join(user_path, 'client.config')
+    config_path = os.path.join(user_path, 'user.json')
 
     with open(config_path, 'r') as file:
-        client_config = file.read()
+        client_config_json = json.load(file)
     
-    date = client_config.split('@')[-2]
-    quota = client_config.split('@')[-3]
-    CC = client_config.split('@')[-1]
+    date = client_config_json['date']
+    quota = client_config_json['quota']
+    CC = client_config_json['concurrent_connections']
     
 
     return date, quota, CC
