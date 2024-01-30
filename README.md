@@ -58,16 +58,21 @@ sudo python3 add_user_to_config_file.py -u amir -c conf/inbound.json -l 100G -d 
 ```
 
 2- Now, assume user 'amir' consumes 100GB with this account. In this case, amir's ID will be removed from the 'conf/inbound.json', and the following log will be recorded in 'reasonremove.log':
+
 `2024-01-28 15:18:29 user 'amir' removed because of quota_out.`
 
 3- After 30 days, amir's ID will be removed from the 'conf/inbound.json', and the following log will be recorded in 'reasonremove.log':
+
 `2025-10-10 10:10:18 user 'amir' removed because of time_out.`
 
 4- If amir connects with more than one connection (source IP address) to this account concurrently, amir's ID will be removed from the 'conf/inbound.json', and the following log will be recorded in 'reasonremove.log':
+
 `2025-10-10 10:12:49 user 'amir' removed because of CC_violation.`
 
 5- If you choose to delete amir manually, in this case, amir's ID will be removed from the 'conf/inbound.json', and the following log will be recorded in 'reasonremove.log':
+
 `2024-01-30 14:46:28 user 'amir' removed manually.`
+
 `Note`: use switch `-f` if you want to delete the user statistics and information completely.
 
 6- Now, if you want to create the user 'amir' again with the previous ID, you can enter this:
@@ -82,8 +87,11 @@ sudo python3 add_user_to_config_file.py -u amir -c conf/inbound.json -l 100G -d 
 
 ## Files And Directories
 `conf/inbound.json`: You put your inbound configs here.
+
 `users/user/Statistics/`: You find user statistics here.
+
 `users/user/user.json`: You find user information here.
+
 `reasonremove.log`: You find logs of why a user removed from 'conf/inbound.json'.
 
 
