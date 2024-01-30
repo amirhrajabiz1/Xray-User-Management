@@ -4,7 +4,10 @@
 This script is for limiting the number of ips who can connect to each UUID.
 """
 
-def is_CC_valid(user_name, max_concurrent_connections, copy_access_file) -> bool:
+
+def is_CC_valid(
+    user_name, max_concurrent_connections, copy_access_file
+) -> bool:
     """
     This function receive path of the access.log.copy file and and checks the user connetion to see the user has how many connections in the last period.
     if the connections are more that max_concurrent_connections returns False and otherwise return True.
@@ -30,6 +33,7 @@ def is_CC_valid(user_name, max_concurrent_connections, copy_access_file) -> bool
     if len(concurrent_connections) > max_concurrent_connections:
         return False
     return True
+
 
 def files_management(original_access_path: str):
     """

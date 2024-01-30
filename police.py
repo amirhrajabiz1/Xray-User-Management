@@ -13,7 +13,10 @@ CONFIG_PATH = 'conf/inbound.json'
 ACCESS_LOG_PATH = 'access.log'
 REASON_REMOVE_LOG_PATH = 'reasonremove.log'
 
-def extract_date_quota_CC_from_client_file(user_name: str) -> Tuple[str, str, str]:
+
+def extract_date_quota_CC_from_client_file(
+    user_name: str,
+) -> Tuple[str, str, str]:
     """
     give the name of the user and return the date and quota and concurrent connections of the user from user.json of that user.
     """
@@ -22,13 +25,13 @@ def extract_date_quota_CC_from_client_file(user_name: str) -> Tuple[str, str, st
 
     with open(config_path, 'r') as file:
         client_config_json = json.load(file)
-    
+
     date = client_config_json['date']
     quota = client_config_json['quota']
     CC = client_config_json['concurrent_connections']
-    
 
     return date, quota, CC
+
 
 def is_user_valid(user_name: str) -> str:
     """
@@ -36,7 +39,11 @@ def is_user_valid(user_name: str) -> str:
     """
     user_stats_path = os.path.join('users', user_name, 'Statistics')
     if os.path.exists(user_stats_path):
-        user_date, user_quota, user_CC = extract_date_quota_CC_from_client_file(user_name)
+        (
+            user_date,
+            user_quota,
+            user_CC,
+        ) = extract_date_quota_CC_from_client_file(user_name)
 
         time_valid = is_time_valid(user_stats_path, user_date)
 
@@ -54,7 +61,6 @@ def is_user_valid(user_name: str) -> str:
     else:
         # If there wasn't any Statistics for the user the user is new and is valid.
         return 'valid'
-
 
 
 def is_time_valid(user_stats_path: str, user_date: str) -> bool:
@@ -87,7 +93,10 @@ def is_time_valid(user_stats_path: str, user_date: str) -> bool:
     else:
         return True
 
-def is_quota_valid(user_stats_path: str, user_quota: str, user_date: str) -> bool:
+
+def is_quota_valid(
+    user_stats_path: str, user_quota: str, user_date: str
+) -> bool:
     """
     Return True if user still has quota and return False otherwise.
     """
@@ -97,9 +106,11 @@ def is_quota_valid(user_stats_path: str, user_quota: str, user_date: str) -> boo
         for file in files:
             if file.endswith('.json'):
                 # Get the relative path of the file
-                rel_path = os.path.relpath(os.path.join(root, file), user_stats_path)
+                rel_path = os.path.relpath(
+                    os.path.join(root, file), user_stats_path
+                )
                 # Replace the path seprators with dashes
-                file_name = rel_path.replace(os.sep, "-")
+                file_name = rel_path.replace(os.sep, '-')
                 plain_file_name = file_name.replace('.json', '')
                 if plain_file_name in dates_user_can_use:
                     full_path_of_file = os.path.join(user_stats_path, rel_path)
@@ -109,7 +120,7 @@ def is_quota_valid(user_stats_path: str, user_quota: str, user_date: str) -> boo
     if user_quota_bytes > used_bandwidth:
         return True
     return False
-                
+
 
 def read_stat_file(full_path_of_file: str) -> int:
     """
@@ -118,8 +129,8 @@ def read_stat_file(full_path_of_file: str) -> int:
     """
     with open(full_path_of_file, 'r') as file:
         data = json.load(file)
-    uplink = data["uplink"]
-    downlink = data["downlink"]
+    uplink = data['uplink']
+    downlink = data['downlink']
     sumlink = uplink + downlink
     return sumlink
 
@@ -130,16 +141,15 @@ def create_days_set_between_two_dates(dates: str) -> set:
     {'2023-12-12', '2023-12-13', '2023-12-14', ..., '2024-1-11'}
     """
 
-    start_date = datetime.strptime(dates.split('-')[0], "%Y%m%d")
-    end_date = datetime.strptime(dates.split('-')[1], "%Y%m%d")
+    start_date = datetime.strptime(dates.split('-')[0], '%Y%m%d')
+    end_date = datetime.strptime(dates.split('-')[1], '%Y%m%d')
 
     result_dates = set()
 
     for i in range((end_date - start_date).days + 1):
-        result_dates.add((start_date + timedelta(days=i)).strftime("%Y-%m-%d"))
+        result_dates.add((start_date + timedelta(days=i)).strftime('%Y-%m-%d'))
 
     return result_dates
-
 
 
 def check_users_validity(config_file: str) -> None:
@@ -150,26 +160,31 @@ def check_users_validity(config_file: str) -> None:
         with open(config_file, 'r') as file:
             file_data = json.load(file)
 
-        clients = file_data["inbounds"][0]["settings"]["clients"]
-        usernames = [client["email"] for client in clients]
+        clients = file_data['inbounds'][0]['settings']['clients']
+        usernames = [client['email'] for client in clients]
 
         for username in usernames:
             user_status = is_user_valid(username)
             if user_status != 'valid':
-                user_deleted_successfully = del_user_from_file(username, config_file)
+                user_deleted_successfully = del_user_from_file(
+                    username, config_file
+                )
                 if user_deleted_successfully:
-                    send_log(REASON_REMOVE_LOG_PATH, f'user \'{username}\' removed because of {user_status}.\n')
+                    send_log(
+                        REASON_REMOVE_LOG_PATH,
+                        f"user '{username}' removed because of {user_status}.\n",
+                    )
             else:
-                #print('user', f'\'{username}\'', 'stays.')
+                # print('user', f'\'{username}\'', 'stays.')
                 pass
 
         files_management(ACCESS_LOG_PATH)
         time.sleep(10)
-    
 
 
 def main() -> None:
-    check_users_validity(CONFIG_PATH) 
+    check_users_validity(CONFIG_PATH)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()
