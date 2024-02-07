@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 """
 This script is for limiting the number of ips who can connect to each UUID.
 """
@@ -13,6 +15,9 @@ def is_CC_valid(
     if the connections are more that max_concurrent_connections returns False and otherwise return True.
     """
     max_concurrent_connections = int(max_concurrent_connections)
+    if not os.path.exists(copy_access_file): # create the copy_access_file if it doesn't exist.
+        with open(copy_access_file, 'w') as fp:
+            pass
     with open(copy_access_file) as file:
         all_records = file.readlines()
     email_records = [record for record in all_records if 'email' in record]
