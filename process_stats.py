@@ -10,7 +10,6 @@ def get_command_output():
         output = subprocess.check_output(
                 ['./xray', 'api', 'statsquery', '--pattern', 'user', '-reset', '--server=127.0.0.1:8080']
         )
-        print(output)
         return json.loads(output)
     except Exception as e:
         print(f'Error running command: {e}')
