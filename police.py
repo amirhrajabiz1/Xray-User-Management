@@ -156,34 +156,34 @@ def check_users_validity(config_file: str) -> None:
     """
     This function iterate through users in conf/inbound.json file and decide whether users are eligible to have access to the service.
     """
-    while True:
-        with open(config_file, 'r') as file:
-            file_data = json.load(file)
+    with open(config_file, 'r') as file:
+        file_data = json.load(file)
 
-        clients = file_data['inbounds'][0]['settings']['clients']
-        usernames = [client['email'] for client in clients]
+    clients = file_data['inbounds'][0]['settings']['clients']
+    usernames = [client['email'] for client in clients]
 
-        for username in usernames:
-            user_status = is_user_valid(username)
-            if user_status != 'valid':
-                user_deleted_successfully = del_user_from_file(
-                    username, config_file
+    for username in usernames:
+        user_status = is_user_valid(username)
+        if user_status != 'valid':
+            user_deleted_successfully = del_user_from_file(
+                username, config_file
+            )
+            if user_deleted_successfully:
+                send_log(
+                    REASON_REMOVE_LOG_PATH,
+                    f"user '{username}' removed because of {user_status}.\n",
                 )
-                if user_deleted_successfully:
-                    send_log(
-                        REASON_REMOVE_LOG_PATH,
-                        f"user '{username}' removed because of {user_status}.\n",
-                    )
-            else:
-                # print('user', f'\'{username}\'', 'stays.')
-                pass
+        else:
+            # print('user', f'\'{username}\'', 'stays.')
+            pass
 
-        files_management(ACCESS_LOG_PATH)
-        time.sleep(10)
 
 
 def main() -> None:
-    check_users_validity(CONFIG_PATH)
+    while True:
+        check_users_validity(CONFIG_PATH)
+        files_management(ACCESS_LOG_PATH)
+        time.sleep(10)
 
 
 if __name__ == '__main__':

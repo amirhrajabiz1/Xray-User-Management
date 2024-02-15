@@ -16,11 +16,19 @@ def get_command_output():
         return None
 
 
-def update_traffic_data(user, traffic_type, value):
+def get_user_day_file_path(user: str) -> str:
+    """
+    gives us the path of the day file in user statistics directory.
+    """
     now = datetime.datetime.now()
-    filename = now.strftime('Statistics/%Y/%m/%d.json')
+    year = now.strftime('%Y')
+    month = now.strftime('%m')
+    day = now.strftime('%d')
+    daypath = os.path.join('users', user, 'Statistics', year, month, day)
+    return daypath
 
-    file_path = os.path.join('users', user, filename)
+def update_traffic_data(user, traffic_type, value):
+    file_path = get_user_day_file_path(user) + '.json'
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     if os.path.exists(file_path):
         with open(file_path, 'r+') as file:
