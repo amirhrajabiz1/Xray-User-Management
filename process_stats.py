@@ -8,7 +8,15 @@ from time import sleep
 def get_command_output():
     try:
         output = subprocess.check_output(
-                ['./xray', 'api', 'statsquery', '--pattern', 'user', '-reset', '--server=127.0.0.1:8080']
+            [
+                './xray',
+                'api',
+                'statsquery',
+                '--pattern',
+                'user',
+                '-reset',
+                '--server=127.0.0.1:8080',
+            ]
         )
         return json.loads(output)
     except Exception as e:
@@ -26,6 +34,7 @@ def get_user_day_file_path(user: str) -> str:
     day = now.strftime('%d')
     daypath = os.path.join('users', user, 'Statistics', year, month, day)
     return daypath
+
 
 def update_traffic_data(user, traffic_type, value):
     file_path = get_user_day_file_path(user) + '.json'
@@ -45,7 +54,7 @@ def update_traffic_data(user, traffic_type, value):
             json.dump({traffic_type: int(value)}, file)
 
 
-def process_data(data):
+def process_trafic_data(data):
     for item in data.get('stat', []):
         parts = item['name'].split('>>>')
         if len(parts) == 4 and parts[0] == 'user':
@@ -60,7 +69,7 @@ def main():
     while True:
         data = get_command_output()
         if data:
-            process_data(data)
+            process_trafic_data(data)
         sleep(5)  # Run the command every second
 
 

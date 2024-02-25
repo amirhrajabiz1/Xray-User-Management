@@ -3,10 +3,10 @@ import os
 from datetime import datetime, timedelta
 import json
 import time
-from typing import NamedTuple
 
 from process_users import convert_to_bytes, del_user_from_file, send_log
 from limit_ip_concurrent import files_management, is_CC_valid
+from domain_logger import domains_logging
 
 
 CONFIG_PATH = 'conf/inbound.json'
@@ -178,10 +178,10 @@ def check_users_validity(config_file: str) -> None:
             pass
 
 
-
 def main() -> None:
     while True:
         check_users_validity(CONFIG_PATH)
+        domains_logging(ACCESS_LOG_PATH)
         files_management(ACCESS_LOG_PATH)
         time.sleep(10)
 
