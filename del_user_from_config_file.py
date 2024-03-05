@@ -54,7 +54,8 @@ if __name__ == '__main__':
     if deleted:
         print(f"Successfully deleted '{name}' from '{file_path}'.")
         send_log(REASON_REMOVE_LOG_PATH, f"user '{name}' removed manually.\n")
-        remove_directory(os.path.join('users', name))
+        if force:
+            remove_directory(os.path.join('users', name))
 
     else:
         print(f"Failed to delete '{name}' from '{file_path}'.")
