@@ -57,7 +57,7 @@ def update_traffic_data(user, traffic_type, value):
 def process_trafic_data(data):
     for item in data.get('stat', []):
         parts = item['name'].split('>>>')
-        if len(parts) == 4 and parts[0] == 'user':
+        if len(parts) == 4 and parts[0] == 'user' and len(item) == 2:
             user, traffic_type = parts[1], parts[-1]
             value = item['value']
             # if not os.path.exists(user):
