@@ -129,9 +129,13 @@ def read_stat_file(full_path_of_file: str) -> int:
     """
     with open(full_path_of_file, 'r') as file:
         data = json.load(file)
-    uplink = data['uplink']
-    downlink = data['downlink']
-    sumlink = uplink + downlink
+    try:        
+        uplink = data['uplink'] # Why I got KeyError: 'uplink' error here?
+        downlink = data['downlink']
+        sumlink = uplink + downlink
+    except KeyError as e:
+        sumlink = 0
+
     return sumlink
 
 

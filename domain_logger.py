@@ -1,5 +1,6 @@
 import os
 import json
+import re
 
 # Importing functions from external modules
 from limit_ip_concurrent import get_email_records_from_access_copy
@@ -24,16 +25,16 @@ def analyze_email_records(copy_access_file: str) -> dict:
 
     # Extract useful parts from each split email record
     useful_parts_splited_email_records = [
-        splited_email_record[4:]
+        splited_email_record[splited_email_record.index('accepted')+1:]
         for splited_email_record in splited_email_records
     ]
 
     # Iterate through each useful part of the split email records
     for record in useful_parts_splited_email_records:
         # Extract username
-        username = ' '.join(record[2:])
+        username = ' '.join(record[record.index('email:')+1:])
         # Extract request info
-        request_info = record[0]
+        request_info = ' '.join(record[:record.index('email:')])
         # Update the output dictionary
         output_dict[username] = output_dict.get(username, {})
         output_dict[username][request_info] = (

@@ -59,8 +59,7 @@
             {
                 "type": "field",
                 "domain": [
-                    "geosite:category-ads-all",
-                    "iran:ads"
+                    "geosite:category-ads-all"
                 ],
                 "outboundTag": "block"
             }
